@@ -19,7 +19,8 @@ class Story {
     this.atCheckpoint = true;
 
     this._findPassages();
-    // this._executeScripts();
+    this._displayStyles();
+    this._executeScripts();
     this._setupEvents();
     this._getMetaPassages();
   }
@@ -174,10 +175,15 @@ class Story {
     });
   }
 
+  _displayStyles() {
+    _.each(this.element.children('#twine-user-stylesheet'), (style) => {
+      $('body').append('<style>' + $(style).html() + '</style>');
+    });
+  }
+
   _executeScripts() {
-    _.each(this.element.children('*[type="text/twine-javascript"]'), (scriptElement) => {
-      console.log(scriptElement, scriptElement.html());
-      eval(scriptElement.html());
+    _.each(this.element.children('#twine-user-script'), (script) => {
+      eval($(script).html());
     });
   }
 
