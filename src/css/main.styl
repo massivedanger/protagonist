@@ -1,0 +1,36 @@
+@require 'normalize.css/normalize.css'
+@require 'jeet'
+
+body
+  background #fff
+  color #333
+
+tw-storydata
+  display none
+
+#story
+  center()
+  margin 50px auto
+  max-width 700px
+  padding 0 20px
+  @media screen and (max-width: 600px)
+    margin 20px auto
+
+#passage, #header, #footer
+  col(3/3)
+
+#passage
+  padding 20px 0
+
+#footer
+  color #aaa
+
+#header, #footer
+  p
+    &:first-child
+      margin-top 0
+    &:last-child
+      margin-bottom 0
+
+.hidden
+  display none

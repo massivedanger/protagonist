@@ -1,0 +1,23 @@
+{
+  "name": "protagonist",
+  "version": "1.0.0",
+  "authors": [
+    "Evan Walsh <evan@massivedanger.com>"
+  ],
+  "description": "A Twine theme for power users",
+  "main": "dist/format.js",
+  "keywords": [
+    "twine"
+  ],
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize.css": "~3.0.3"
+  }
+}

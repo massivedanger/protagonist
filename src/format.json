@@ -1,0 +1,10 @@
+{
+	"name": "Protagonist",
+	"version": "1.0",
+	"description": "A format for power users",
+	"image": "icon.svg",
+	"author": "Evan Walsh",
+	"url": "https://github.com/evanwalsh/protagonist",
+	"license": "ISC",
+	"proofing": false
+}
