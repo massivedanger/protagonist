@@ -1,6 +1,8 @@
 'use strict';
 
 import $ from 'jquery';
+import toml from 'toml';
+import _ from 'lodash';
 import Passage from './passage';
 import Helpers from './helpers';
 
@@ -18,15 +20,20 @@ class Story {
     this.currentCheckpoint = '';
     this.atCheckpoint = true;
 
+    this.config = {
+      darkTheme: false
+    };
+
     this._findPassages();
     this._displayStyles();
     this._executeScripts();
-    this._setupEvents();
     this._getMetaPassages();
+    this._setupEvents();
+    this._useConfig();
   }
 
   play() {
-		if (window.location.hash == '' || !this.restore(window.location.hash.replace('#', ''))) {
+		if (localStorage.getItem(this.saveKey) == undefined || !this.restore()) {
 			this.goToPassage(this.startPassageID);
       this.atCheckpoint = true;
 		}
@@ -42,13 +49,13 @@ class Story {
   }
 
   goToPassage(query, addToHistory = true) {
+    $.event.trigger('goToPassage:before');
+
 		var passage = this.getPassage(query);
 
 		if (!passage) {
 			throw new Error(`No passage found with ID or name "${query}"`);
     }
-
-    $.event.trigger('goToPassage:before');
 
     if (addToHistory) {
   		this.history.push(passage.id);
@@ -91,34 +98,46 @@ class Story {
   }
 
   checkpoint(name) {
+		$.event.trigger('checkpoint:before');
     document.title = `${this.name}: ${name}`
     this.currentCheckpoint = name;
 		this.atCheckpoint = true;
-
-		$.event.trigger('checkpoint');
+		$.event.trigger('checkpoint:after');
   }
 
   save() {
 		$.event.trigger('save:before');
-		window.location.hash = this.saveHash;
+    localStorage.setItem(this.saveKey, this.serialized)
 		$.event.trigger('save:after');
   }
 
-  get saveHash() {
-		return btoa(
-      JSON.stringify({
-        state: this.state,
-        history: this.history,
-        currentCheckpoint: this.currentCheckpoint
-      })
-    );
+  get serialized() {
+    return JSON.stringify({
+      state: this.state,
+      history: this.history,
+      currentCheckpoint: this.currentCheckpoint
+    });
   }
 
-  restore(hash) {
+  get saveKey() {
+    return `${this.name.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-')}.save`;
+  }
+
+  get saveData() {
+    var data;
+    if (data = localStorage.getItem(this.saveKey)) {
+      return JSON.parse(data);
+    }
+    else {
+      return null;
+    }
+  }
+
+  restore() {
 		$.event.trigger('restore:before');
 
 		try {
-			var save = JSON.parse(LZString.decompressFromBase64(hash));
+      var save = this.saveData;
 			this.state = save.state;
 			this.history = save.history;
 			this.currentCheckpoint = save.currentCheckpoint;
@@ -131,6 +150,12 @@ class Story {
 
 		$.event.trigger('restore:after');
 		return true;
+  }
+
+  reset() {
+    $.event.trigger('reset:before');
+    localStorage.removeItem(this.saveKey);
+    $.event.trigger('reset:after');
   }
 
   get previousPassage() {
@@ -165,6 +190,8 @@ class Story {
   }
 
   _findPassages() {
+    console.log('Parsing passage data...');
+
     this.passages = [];
     _.each(this.element.children('tw-passagedata'), (passageElement) => {
       passageElement = $(passageElement);
@@ -176,18 +203,24 @@ class Story {
   }
 
   _displayStyles() {
+    console.log('Displaying story styles...');
+
     _.each(this.element.children('#twine-user-stylesheet'), (style) => {
       $('body').append('<style>' + $(style).html() + '</style>');
     });
   }
 
   _executeScripts() {
+    console.log('Executing story scripts...');
+
     _.each(this.element.children('#twine-user-script'), (script) => {
       eval($(script).html());
     });
   }
 
   _setupEvents() {
+    console.log('Setting up events...');
+
   	$(window).on('popstate', (event) => {
   		var state = event.originalEvent.state;
 
@@ -210,9 +243,13 @@ class Story {
   		this.goToPassage(link.attr('data-passage'), link.attr('history') || true);
   	});
 
-  	$(window).on('hashchange', () => {
-  		this.restore(window.location.hash.replace('#', ''));
-  	});
+    $('body').on('click', '.save-link', (event) => {
+      this.save();
+    });
+
+    $('body').on('click', '.restore-link', (event) => {
+      this.restore();
+    });
 
   	window.onerror = function (message, url, line) {
       console.error(message, url, line);
@@ -220,14 +257,37 @@ class Story {
   }
 
   _getMetaPassages() {
+    console.log('Looking for meta passages...');
+
     this.header = this.getPassage('HEADER');
     this.footer = this.getPassage('FOOTER');
+    var configPassage = this.getPassage('CONFIG');
 
     if (this.header) {
       $('#header').removeClass('hidden');
     }
     if (this.footer) {
       $('#footer').removeClass('hidden');
+    }
+
+    if (configPassage) {
+      this.config = _.defaults(toml.parse(configPassage.source), this.config);
+    }
+  }
+
+  _useConfig() {
+    console.log('Parsing config...');
+
+    if (this.config.darkTheme) {
+      $('body').addClass('dark');
+    }
+
+    if (this.config.stylesheets) {
+      _.each(this.config.stylesheets, (url) => {
+        $('head').append(
+          `<link href='${url}' rel='stylesheet' type='text/css'>`
+        );
+      })
     }
   }
 }

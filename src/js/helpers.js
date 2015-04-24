@@ -3,6 +3,7 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import { Howl } from 'howler';
+import toml from 'toml';
 
 class Helpers {
   constructor(story) {
@@ -20,7 +21,10 @@ class Helpers {
       'toggleHeaderAndFooter',
       'previousPassage',
       'nextPassage',
-      'state'
+      'state',
+      'saveLink',
+      'restoreLink',
+      'config'
     ];
   }
 
@@ -40,6 +44,7 @@ class Helpers {
     object.$ = $;
     object._ = _;
     object.Howl = Howl;
+    object.toml = toml;
 
     return object;
   }
@@ -57,6 +62,18 @@ class Helpers {
     var history = options.history || true;
 
 		return `<a href="javascript:void(0)" data-history="${history}" data-passage="${passage}" class="${classes.join(' ')}">${text}</a>`;
+  }
+
+  saveLink(text = 'Save', options = {}) {
+    var classes = ['save-link'].concat(options.class);
+
+		return `<a href="javascript:void(0)" class="${classes.join(' ')}">${text}</a>`;
+  }
+
+  restoreLink(text = 'Restore', options = {}) {
+    var classes = ['restore-link'].concat(options.class);
+
+		return `<a href="javascript:void(0)" class="${classes.join(' ')}">${text}</a>`;
   }
 
   show(passage) {
@@ -103,6 +120,10 @@ class Helpers {
 
   get nextPassage() {
     return this.story.nextPassage;
+  }
+
+  get config() {
+    return this.story.config;
   }
 }
 
