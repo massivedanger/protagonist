@@ -240,7 +240,13 @@ class Story {
 
     $('body').on('click', 'a[data-passage]', (event) => {
       var link = $(event.target);
-  		this.goToPassage(link.attr('data-passage'), link.attr('history') || true);
+      if (link.attr('data-show')) {
+        var passage = this.showPassage(link.attr('data-passage'));
+        link.replaceWith(passage || '');
+      }
+      else {
+    		this.goToPassage(link.attr('data-passage'), link.attr('history') || true);
+      }
   	});
 
     $('body').on('click', '.save-link', (event) => {

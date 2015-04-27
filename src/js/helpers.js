@@ -11,6 +11,7 @@ class Helpers {
     this.exposed = [
       'story',
       'link',
+      'showLink',
       'show',
       'goTo',
       'random',
@@ -19,12 +20,14 @@ class Helpers {
       'toggleHeader',
       'toggleFooter',
       'toggleHeaderAndFooter',
+      'toggleDarkTheme',
       'previousPassage',
       'nextPassage',
       'state',
       'saveLink',
       'restoreLink',
-      'config'
+      'config',
+      'buildLink'
     ];
   }
 
@@ -50,30 +53,58 @@ class Helpers {
   }
 
   get state() {
-    return this.story.state
+    return this.story.state;
   }
 
-  link(text, passage, options = {}) {
-    var classes = ['passage-link'].concat(options.class);
-    if (options.noHistory) {
-      classes.push('no-history');
+  link(text, passage) {
+    return this.buildLink({
+      text: text,
+      classes: ['passage-link'],
+      data: {
+        history: (options.history || true),
+        passage: passage
+      }
+    });
+  }
+
+  showLink(text, passage) {
+    return this.buildLink({
+      text: text,
+      classes: ['passage-show-link'],
+      data: {
+        passage: passage,
+        show: true
+      }
+    });
+  }
+
+  saveLink(text = 'Save') {
+    return this.buildLink({
+      text: text,
+      classes: ['save-link']
+    });
+  }
+
+  restoreLink(text = 'Restore') {
+    return this.buildLink({
+      text: text,
+      classes: ['restore-link']
+    });
+  }
+
+  buildLink(options = {}) {
+    var link = $('<a></a>')
+      .attr('href', options.href || 'javascript:void(0)')
+      .attr('class', options.classes ? options.classes.join(' ') : 'link')
+      .html(options.text);
+
+    if (options.data) {
+      _.each(options.data, (value, key) => {
+        link.attr(`data-${key}`, value);
+      });
     }
 
-    var history = options.history || true;
-
-		return `<a href="javascript:void(0)" data-history="${history}" data-passage="${passage}" class="${classes.join(' ')}">${text}</a>`;
-  }
-
-  saveLink(text = 'Save', options = {}) {
-    var classes = ['save-link'].concat(options.class);
-
-		return `<a href="javascript:void(0)" class="${classes.join(' ')}">${text}</a>`;
-  }
-
-  restoreLink(text = 'Restore', options = {}) {
-    var classes = ['restore-link'].concat(options.class);
-
-		return `<a href="javascript:void(0)" class="${classes.join(' ')}">${text}</a>`;
+    return link.prop('outerHTML');
   }
 
   show(passage) {
@@ -112,6 +143,10 @@ class Helpers {
   toggleHeaderAndFooter() {
     toggleHeader();
     toggleFooter();
+  }
+
+  toggleDarkTheme() {
+    $('.body').toggleClass('dark');
   }
 
   get previousPassage() {

@@ -1,12 +1,94 @@
 @require 'normalize.css/normalize.css'
 @require 'jeet'
 
+// Variables
+
+$background-color = #fff
+$text-color = #333
+
+$link-color = #9b59b6
+$link-hover-color = #7f8c8d
+$link-active-color = #95a5a6
+
+$dark-background-color = #222
+$dark-text-color = #fafafa
+
+// Top-level elements
+
 body
-  background #fff
-  color #333
+  background $background-color
+  color $text-color
+  &.dark
+    background $dark-background-color
+    color $dark-text-color
+
+a
+  text-decoration none
+  &:link, &:visited
+    color $link-color
+  &:hover
+    color $link-hover-color
+  &:active
+    color $link-active-color
+
+blockquote
+  border-left #ccc 2px solid
+  margin 20px 40px
+  padding 5px 10px
+  p:first-child
+    margin-top: 0
+  p:last-child
+    margin-bottom: 0
+
+hr
+  border: none
+  border-top: #ccc 2px solid
+  margin 20px 0
+
+img
+  max-width 100%
+
+pre
+  background #eee
+  color #222
+  font-family monospace
+  padding 20px
+
+table
+  border #ccc 1px solid
+  padding 10px
+  width 100%
+  tr
+    & td, & th
+      padding 10px
+  thead
+    background #ddd
+  tbody
+    tr:nth-child(even)
+      background #eee
+
+.dark
+  blockquote
+    border-color #555
+  hr
+    border-color: #777
+  pre
+    background: #000
+    color: #eee
+  table
+    border-color #777
+    thead
+      background #111
+    tbody
+      tr:nth-child(even)
+        background #444
+
+// Twine elements
 
 tw-storydata
   display none
+
+// Custom elements
 
 #story
   center()
