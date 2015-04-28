@@ -16,10 +16,8 @@ class Helpers {
       'goTo',
       'random',
       'randomNumber',
-      'wait',
       'toggleHeader',
       'toggleFooter',
-      'toggleHeaderAndFooter',
       'toggleDarkTheme',
       'previousPassage',
       'nextPassage',
@@ -128,21 +126,12 @@ class Helpers {
     return _.random(min, max, floating);
   }
 
-  wait(time, callback) {
-    setTimeout(callback, time);
-  }
-
   toggleHeader() {
     $('#header').toggleClass('hidden');
   }
 
   toggleFooter() {
     $('#footer').toggleClass('hidden');
-  }
-
-  toggleHeaderAndFooter() {
-    toggleHeader();
-    toggleFooter();
   }
 
   toggleDarkTheme() {

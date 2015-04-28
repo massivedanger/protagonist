@@ -3,9 +3,7 @@
   "version": "1.0.0-alpha",
   "description": "A format for Twine",
   "main": "index.js",
-  "scripts": {
-    "test": "echo 'No tests!'"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/evanwalsh/protagonist.git"
