@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Protagonist by massivedanger</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Protagonist</h1>
+        <h2>A Twine story format with power!</h2>
+        <a href="https://github.com/massivedanger/protagonist" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Markdown support in passages</li>
+<li>Embedded JavaScript support in passages</li>
+<li>Easy-to-use helpers for getting story data, linking to passages, showing passages
+inline, and much more</li>
+<li>Light and dark theme</li>
+<li>Global header and footer support</li>
+<li>Save and load progress</li>
+</ul>
+
+<h2>
+<a id="installing" class="anchor" href="#installing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing</h2>
+
+<ol>
+<li>Launch Twine 2</li>
+<li>Click on the Formats link in the Twine 2 sidebar</li>
+<li>In the dialog that opens, click on the tab Add a New Format</li>
+<li>
+<p>Paste this URL into the text box and click the +Add button:</p>
+
+<pre><code>https://raw.githubusercontent.com/massivedanger/protagonist/v1.0.0-alpha.1/dist/format.js
+</code></pre>
+</li>
+</ol>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="markdown" class="anchor" href="#markdown" aria-hidden="true"><span class="octicon octicon-link"></span></a>Markdown</h3>
+
+<p>Markdown parsing is provided via <a href="https://github.com/chjj/marked">marked</a>. It supports
+<a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored Markdown</a>
+and no non-default options are set.</p>
+
+<p>One addition to the Markdown parsing is support for Twine-style passage links with the
+format of <code>[[Link Text|Passage Name]]</code> or <code>[[Link Text-&gt;Passage Name]]</code>. The alternate
+<code>[[Passage Name&lt;-Link Text]]</code> format is not supported.</p>
+
+<h3>
+<a id="embedded-javascript" class="anchor" href="#embedded-javascript" aria-hidden="true"><span class="octicon octicon-link"></span></a>Embedded JavaScript</h3>
+
+<p>All passages support embedded JavaScript logic. That means you can do things like
+this in your passage:</p>
+
+<pre><code>&lt;% number = 1 %&gt;
+
+Hello! Your lucky number is &lt;%= number %&gt;
+</code></pre>
+
+<p>Anything within <code>&lt;%</code> and <code>%&gt;</code> is executed, but not shown in the browser. Anything within
+<code>&lt;%=</code> and <code>%&gt;</code> is executed and then the result is shown to the user. To learn more
+about how this works under the hood, check out <a href="https://lodash.com/docs#template">lodash's template function</a>.</p>
+
+<h3>
+<a id="checkpointssaving" class="anchor" href="#checkpointssaving" aria-hidden="true"><span class="octicon octicon-link"></span></a>Checkpoints/saving</h3>
+
+<p>Protagonist has built-in progress saving. To allow the use of the forward and back
+buttons of the browser and to change the window's title upon reaching certain passages,
+just add the "checkpoint" tag to any passage. You can also use it as a helper like this:</p>
+
+<pre><code>&lt;% story.checkpoint('Name of the checkpoint goes here') %&gt;
+</code></pre>
+
+<p>If you'd like to save all the progress, you'll need to call <code>story.save()</code> in your
+passage. As a convenience, you can specify a <code>saveLink</code> somewhere. I recommended
+in a header or footer passage (see Meta Passages for more info). To learn more about
+the <code>saveLink</code>, see Helpers.</p>
+
+<h3>
+<a id="helpers" class="anchor" href="#helpers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Helpers</h3>
+
+<p>To assist with common Twine usage, a set of default helpers are supplied that you
+can use with the embedded JavaScript support.</p>
+
+<h4>
+<a id="passage" class="anchor" href="#passage" aria-hidden="true"><span class="octicon octicon-link"></span></a>passage</h4>
+
+<p>Access to the current passage's data, including:</p>
+
+<p><strong>Properties</strong></p>
+
+<ul>
+<li>
+<code>story</code> (Story): Parent Story object of this passage</li>
+<li>
+<code>element</code> (jQuery element): jQuery representation of the source HTML element</li>
+<li>
+<code>id</code> (number): Twine ID number of the passage</li>
+<li>
+<code>name</code> (string): Name of the passage</li>
+<li>
+<code>tags</code> (array[string]): All tags added to the passage</li>
+<li>
+<code>source</code> (string): Raw HTML source</li>
+</ul>
+
+<p><strong>Functions</strong></p>
+
+<ul>
+<li>
+<code>render()</code> (string): HTML output of the passage's Markdown source</li>
+</ul>
+
+<h4>
+<a id="story" class="anchor" href="#story" aria-hidden="true"><span class="octicon octicon-link"></span></a>story</h4>
+
+<p><strong>Properties</strong></p>
+
+<ul>
+<li>
+<code>element</code> (jQuery element): jQuery representation of the source HTML element</li>
+<li>
+<code>name</code> (string): Name of the story</li>
+<li>
+<code>startPassageID</code> (number): Twine ID number of the first passage</li>
+<li>
+<code>IFID</code> (string): <a href="http://ifdb.tads.org/help-ifid">IFID</a> of the story</li>
+<li>
+<code>creator</code> (string): Name of the software that output the story</li>
+<li>
+<code>creatorVersion</code> (string): Version of the creator software</li>
+<li>
+<code>history</code> (array[number]): All previous passages visited by the player, by ID</li>
+<li>
+<code>state</code> (object): Custom story data set during play</li>
+<li>
+<code>currentCheckpoint</code> (string): Name of the last checkpoint visited by the player</li>
+<li>
+<code>atCheckpoint</code> (boolean): True if currently at a checkpoint passage</li>
+<li>
+<code>config</code> (object): Custom data set at the start of play, but can change</li>
+<li>
+<code>passages</code> (array[Passage]): All passages within the story</li>
+<li>
+<code>serialized</code> (string): JSON representation of the player's current progress</li>
+<li>
+<code>saveData</code> (object): Progress retrieved that has been saved previously</li>
+<li>
+<code>previousPassage</code> (Passage): The passage visited before the current one</li>
+<li>
+<code>nextPassage</code> (Passage): The passage visited after the current one</li>
+<li>
+<code>helpers</code> (object): All the helpers available inside of a passage's context</li>
+</ul>
+
+<p><strong>Functions</strong></p>
+
+<ul>
+<li>
+<code>getPassage(query:string|number)</code> (Passage): Retrieves the Passage object for
+a passage by either its name or ID number</li>
+<li>
+<code>goToPassage(query:string|number)</code> (void): Navigates the player to a passage
+by either its name or ID number</li>
+<li>
+<code>showPassage(query:string|number)</code> (string): Get a passage's rendered output
+by either its name or ID number</li>
+<li>
+<code>checkpoint(name:string)</code> (void): Manually trigger a checkpoint and change the
+window's title to match the <code>name</code> provided</li>
+<li>
+<code>save()</code> (boolean): Save the player's current progress to the browser's local
+storage</li>
+<li>
+<code>restore()</code> (boolean): Restore the player's saved progress</li>
+<li>
+<code>reset()</code> (boolean): Reset the player's progress by removing all saved data</li>
+</ul>
+
+<h4>
+<a id="state" class="anchor" href="#state" aria-hidden="true"><span class="octicon octicon-link"></span></a>state</h4>
+
+<p>Store any player data inside of <code>state</code>. What player data means is up to you, but
+<code>state</code> is provided as a convenience. It's attached to the parent <code>story</code> object.</p>
+
+<h4>
+<a id="config" class="anchor" href="#config" aria-hidden="true"><span class="octicon octicon-link"></span></a>config</h4>
+
+<p>By default, this will be an object with just a <code>darkTheme</code> attribute. However,
+any configuration set in your CONFIG passage will be parsed and added to this.</p>
+
+<p><strong>Properties</strong></p>
+
+<ul>
+<li>
+<code>darkTheme</code> (boolean): Whether or not the dark theme is turned on. Defaults to
+false for new stories.</li>
+</ul>
+
+<h4>
+<a id="linktextstring-passagestringnumber" class="anchor" href="#linktextstring-passagestringnumber" aria-hidden="true"><span class="octicon octicon-link"></span></a>link(text:string, passage:string|number)</h4>
+
+<p>Show a link that, when clicked, navigates the player to the chosen passage.</p>
+
+<ul>
+<li>
+<code>text</code>: what will be shown to the player as clickable text</li>
+<li>
+<code>passage</code>: either the name of the passage or its Twine ID number</li>
+</ul>
+
+<pre><code>&lt;%= link('Go outside', 'Outside') %&gt;
+
+&lt;%= link('Go to the passage with ID #2', 2) %&gt;
+</code></pre>
+
+<h4>
+<a id="showlinktextstring-passagestringnumber" class="anchor" href="#showlinktextstring-passagestringnumber" aria-hidden="true"><span class="octicon octicon-link"></span></a>showLink(text:string, passage:string|number)</h4>
+
+<p>Show a link that, when clicked, inserts a passage's content inline.</p>
+
+<ul>
+<li>
+<code>text</code>: what will be shown to the player as clickable text</li>
+<li>
+<code>passage</code>: either the name of the passage or its Twine ID number</li>
+</ul>
+
+<pre><code>&lt;%= showLink('Look outside', 'Outside') %&gt;
+
+&lt;%= showLink('Look at passage ID #2', 2) %&gt;
+</code></pre>
+
+<h4>
+<a id="showpassagestringnumber" class="anchor" href="#showpassagestringnumber" aria-hidden="true"><span class="octicon octicon-link"></span></a>show(passage:string|number)</h4>
+
+<p>Show a passage's rendered content inline.</p>
+
+<ul>
+<li>
+<code>passage</code>: either the name of the passage or its Twine ID number</li>
+</ul>
+
+<pre><code>&lt;%= show('Outside') %&gt;
+
+&lt;%= show(2) %&gt;
+</code></pre>
+
+<h4>
+<a id="gotopassagestringnumber" class="anchor" href="#gotopassagestringnumber" aria-hidden="true"><span class="octicon octicon-link"></span></a>goTo(passage:string|number)</h4>
+
+<p>Navigate the player to a passage.</p>
+
+<ul>
+<li>
+<code>passage</code>: either the name of the passage or its Twine ID number</li>
+</ul>
+
+<pre><code>&lt;%= goTo('Outside') %&gt;
+
+&lt;%= goTo(2) %&gt;
+</code></pre>
+
+<h4>
+<a id="randomchoicesarray" class="anchor" href="#randomchoicesarray" aria-hidden="true"><span class="octicon octicon-link"></span></a>random(choices:array)</h4>
+
+<p>Show a random item from an array of items. For simple usage, a variable number
+of arguments can be supplied and a random item will be chosen from them.</p>
+
+<ul>
+<li>
+<code>choices</code>: array of items to choose from</li>
+</ul>
+
+<pre><code>&lt;%= random(['thing 1', 'thing 2', 'thing 3']) %&gt;
+
+&lt;%= random('thing 1', 'thing 2', 'thing 3') %&gt;
+</code></pre>
+
+<h4>
+<a id="randomnumberminnumber-maxnumber-floatingboolean" class="anchor" href="#randomnumberminnumber-maxnumber-floatingboolean" aria-hidden="true"><span class="octicon octicon-link"></span></a>randomNumber(min:number, max:number, floating:boolean)</h4>
+
+<p>Show a random number based on a minimum and a maximum. Optionally, it can be a
+floating point number.</p>
+
+<ul>
+<li>
+<code>min</code>: the minimum number</li>
+<li>
+<code>max</code>: the maximum number</li>
+<li>
+<code>floating</code>: whether or not the chosen number should be floating point</li>
+</ul>
+
+<pre><code>&lt;%= randomNumber(0, 100) %&gt;
+
+&lt;%= randomNumber(0, 1, true) %&gt;
+</code></pre>
+
+<h4>
+<a id="toggleheader" class="anchor" href="#toggleheader" aria-hidden="true"><span class="octicon octicon-link"></span></a>toggleHeader()</h4>
+
+<p>Toggles the HEADER meta passage's display</p>
+
+<h4>
+<a id="togglefooter" class="anchor" href="#togglefooter" aria-hidden="true"><span class="octicon octicon-link"></span></a>toggleFooter()</h4>
+
+<p>Toggles the FOOTER meta passage's display</p>
+
+<h4>
+<a id="toggledarktheme" class="anchor" href="#toggledarktheme" aria-hidden="true"><span class="octicon octicon-link"></span></a>toggleDarkTheme()</h4>
+
+<p>Toggles whether the dark theme is on or off</p>
+
+<h4>
+<a id="savelinktextstring" class="anchor" href="#savelinktextstring" aria-hidden="true"><span class="octicon octicon-link"></span></a>saveLink(text:string)</h4>
+
+<p>Show a link that, when clicked, saves the player's progress.</p>
+
+<ul>
+<li>
+<code>text</code>: what will be shown to the player as clickable text</li>
+</ul>
+
+<pre><code>&lt;%= saveLink('[save]') %&gt;
+</code></pre>
+
+<h4>
+<a id="restorelinktextstring" class="anchor" href="#restorelinktextstring" aria-hidden="true"><span class="octicon octicon-link"></span></a>restoreLink(text:string)</h4>
+
+<p>Show a link that, when clicked, restores the player's progress.</p>
+
+<ul>
+<li>
+<code>text</code>: what will be shown to the player as clickable text</li>
+</ul>
+
+<pre><code>&lt;%= restoreLink('[restore]') %&gt;
+</code></pre>
+
+<h3>
+<a id="third-party-libraries" class="anchor" href="#third-party-libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a>Third-party libraries</h3>
+
+<p>In addition to these custom helpers, a few third-party libraries are available within
+a passage's JavaScript.</p>
+
+<ul>
+<li>
+<code>$</code>: <a href="http://jquery.com/">jQuery</a>
+</li>
+<li>
+<code>_</code>: <a href="https://lodash.com/">lodash</a>
+</li>
+<li>
+<code>toml</code>: <a href="https://github.com/BinaryMuse/toml-node">toml-node</a>
+</li>
+</ul>
+
+<h3>
+<a id="meta-passages" class="anchor" href="#meta-passages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Meta passages</h3>
+
+<p>A global header and footer passage can be shown at the top and bottom of your story.
+All you have to do is create a passage named <code>HEADER</code> or <code>FOOTER</code> and they'll be
+displayed (at the top and bottom respectively).</p>
+
+<p>A passage named CONFIG can contain any valid <a href="https://github.com/toml-lang/toml">TOML</a>
+and it'll be parsed and stored within <code>story.config</code>, which can be accessed from
+any passage. This is recommended for any data that won't change <em>or</em> for anything
+that all passages will need right from the start.</p>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ul>
+<li>Check out the latest master to make sure the feature hasn't been implemented or
+the bug hasn't been fixed yet.</li>
+<li>Check out the issue tracker to make sure someone already hasn't requested it
+and/or contributed it.</li>
+<li>Fork the project.</li>
+<li>Start a feature/bugfix branch.</li>
+<li>Commit and push until you are happy with your contribution.</li>
+<li>Make sure to add tests for it. This is important so I don't break it in a future
+version unintentionally.</li>
+<li>Try not to change the version number in your commits. If you want to have your
+own version, that's fine. Just have the version change be a separate commit I
+can cherry-pick around.</li>
+</ul>
+
+<h2>
+<a id="special-thanks" class="anchor" href="#special-thanks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Special Thanks</h2>
+
+<ul>
+<li>
+<a href="http://chrisklimas.com/">Chris Klimas</a> for <a href="http://twinery.org/">Twine</a> and
+<a href="https://bitbucket.org/klembot/snowman-2">Snowman</a>
+</li>
+<li>
+<a href="http://antagonizethehorn.com/">Javy Gwaltney</a> for showing me the power of Twine</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/massivedanger/protagonist/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/massivedanger/protagonist/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/massivedanger/protagonist"></a> is maintained by <a href="https://github.com/massivedanger">massivedanger</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
