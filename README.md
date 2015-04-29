@@ -1,8 +1,6 @@
 # Protagonist
 
-A story format for [Twine](http://twinery.org/)
-
-Special thanks to [Snowman](https://bitbucket.org/klembot/snowman-2) for inspiration and code.
+A [Twine](http://twinery.org/) with power!
 
 ## Features
 
@@ -19,7 +17,8 @@ Special thanks to [Snowman](https://bitbucket.org/klembot/snowman-2) for inspira
 1. Launch Twine 2
 2. Click on the Formats link in the Twine 2 sidebar
 3. In the dialog that opens, click on the tab Add a New Format
-4. Paste this URL into the text box and click the +Add button: `https://raw.githubusercontent.com/evanwalsh/protagonist/v1.0.0-alpha/dist/format.js`
+4. Paste this URL into the text box and click the +Add button:
+   `https://raw.githubusercontent.com/evanwalsh/protagonist/v1.0.0-alpha/dist/format.js`
 
 ## Usage
 
@@ -74,52 +73,66 @@ Access to the current passage's data, including:
 
 **Properties**
 
-- `story`:
-- `element`:
-- `id`:
-- `name`:
-- `tags`:
-- `source`:
+- `story` (Story): Parent Story object of this passage
+- `element` (jQuery element): jQuery representation of the source HTML element
+- `id` (number): Twine ID number of the passage
+- `name` (string): Name of the passage
+- `tags` (array[string]): All tags added to the passage
+- `source` (string): Raw HTML source
+
+**Functions**
+
+- `render()` (string): HTML output of the passage's Markdown source
 
 #### story
 
 **Properties**
 
-- `element`:
-- `name`:
-- `startPassageID`:
-- `IFID`:
-- `creator`:
-- `creatorVersion`:
-- `history`:
-- `state`:
-- `currentCheckpoint`:
-- `atCheckpoint`:
-- `config`:
-- `passages`:
-- `serialized`:
-- `saveData`:
+- `element` (jQuery element): jQuery representation of the source HTML element
+- `name` (string): Name of the story
+- `startPassageID` (number): Twine ID number of the first passage
+- `IFID` (string): [IFID](http://ifdb.tads.org/help-ifid) of the story
+- `creator` (string): Name of the software that output the story
+- `creatorVersion` (string): Version of the creator software
+- `history` (array[number]): All previous passages visited by the player, by ID
+- `state` (object): Custom story data set during play
+- `currentCheckpoint` (string): Name of the last checkpoint visited by the player
+- `atCheckpoint` (boolean): True if currently at a checkpoint passage
+- `config` (object): Custom data set at the start of play, but can change
+- `passages` (array[Passage]): All passages within the story
+- `serialized` (string): JSON representation of the player's current progress
+- `saveData` (object): Progress retrieved that has been saved previously
+- `previousPassage` (Passage): The passage visited before the current one
+- `nextPassage` (Passage): The passage visited after the current one
+- `helpers` (object): All the helpers available inside of a passage's context
 
 **Functions**
 
-- `getPassage(query)`:
-- `goToPassage(query)`:
-- `showPassage`:
-- `checkpoint`:
-- `save`:
-- `restore`:
-- `reset`:
-- `previousPassage`:
-- `nextPassage`:
-- `helpers`:
+- `getPassage(query:string|number)` (Passage): Retrieves the Passage object for
+  a passage by either its name or ID number
+- `goToPassage(query:string|number)` (void): Navigates the player to a passage
+  by either its name or ID number
+- `showPassage(query:string|number)` (string): Get a passage's rendered output
+  by either its name or ID number
+- `checkpoint(name:string)` (void): Manually trigger a checkpoint and change the
+  window's title to match the `name` provided
+- `save()` (boolean): Save the player's current progress to the browser's local
+  storage
+- `restore()` (boolean): Restore the player's saved progress
+- `reset()` (boolean): Reset the player's progress by removing all saved data
 
 #### state
 
 #### config
 
-- `darkTheme`:
+By default, this will be an object with just a `darkTheme` attribute. However,
+any configuration set in your CONFIG passage will be parsed and added to this.
 
-#### link
+**Properties**
+
+- `darkTheme` (boolean):
+
+#### link(text:string, passage:string|number)
 
 ```
 <%= link('Go outside', 'Outside') %>
@@ -127,7 +140,7 @@ Access to the current passage's data, including:
 <%= link('Go to the passage with ID #2', 2) %>
 ```
 
-#### showLink
+#### showLink(text:string, passage:string|number)
 
 ```
 <%= showLink('Look outside', 'Outside') %>
@@ -135,7 +148,7 @@ Access to the current passage's data, including:
 <%= showLink('Look at passage ID #2', 2) %>
 ```
 
-#### show
+#### show(passage:string|number)
 
 ```
 <%= show('Outside') %>
@@ -143,7 +156,7 @@ Access to the current passage's data, including:
 <%= show(2) %>
 ```
 
-#### goTo
+#### goTo(passage:string|number)
 
 ```
 <%= goTo('Outside') %>
@@ -151,7 +164,7 @@ Access to the current passage's data, including:
 <%= goTo(2) %>
 ```
 
-#### random
+#### random(choices:array)
 
 ```
 <%= random(['thing 1', 'thing 2', 'thing 3']) %>
@@ -159,7 +172,7 @@ Access to the current passage's data, including:
 <%= random('thing 1', 'thing 2', 'thing 3') %>
 ```
 
-#### randomNumber
+#### randomNumber(min:number, max:number, floating:boolean)
 
 ```
 <%= randomNumber(0, 100) %>
@@ -167,23 +180,23 @@ Access to the current passage's data, including:
 <%= randomNumber(0, 1, true) %>
 ```
 
-#### toggleHeader
+#### toggleHeader()
 
-#### toggleFooter
+#### toggleFooter()
 
-#### toggleDarkTheme
+#### toggleDarkTheme()
 
 #### previousPassage
 
 #### nextPassage
 
-#### saveLink
+#### saveLink(text:string)
 
 ```
 <%= saveLink('[save]') %>
 ```
 
-#### restoreLink
+#### restoreLink(text:string)
 
 ```
 <%= restoreLink('[restore]') %>
@@ -214,3 +227,9 @@ that all passages will need right from the start.
 - Try not to change the version number in your commits. If you want to have your
   own version, that's fine. Just have the version change be a separate commit I
   can cherry-pick around.
+
+## Special Thanks
+
+- [Chris Klimas](http://chrisklimas.com/) for [Twine](http://twinery.org/) and
+  [Snowman](https://bitbucket.org/klembot/snowman-2)
+- [Javy Gwaltney](http://antagonizethehorn.com/) for showing me the power of Twine
