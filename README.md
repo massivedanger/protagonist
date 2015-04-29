@@ -123,6 +123,9 @@ Access to the current passage's data, including:
 
 #### state
 
+Store any player data inside of `state`. What player data means is up to you, but
+`state` is provided as a convenience. It's attached to the parent `story` object.
+
 #### config
 
 By default, this will be an object with just a `darkTheme` attribute. However,
@@ -130,9 +133,15 @@ any configuration set in your CONFIG passage will be parsed and added to this.
 
 **Properties**
 
-- `darkTheme` (boolean):
+- `darkTheme` (boolean): Whether or not the dark theme is turned on. Defaults to
+  false for new stories.
 
 #### link(text:string, passage:string|number)
+
+Show a link that, when clicked, navigates the player to the chosen passage.
+
+- `text`: what will be shown to the player as clickable text
+- `passage`: either the name of the passage or its Twine ID number
 
 ```
 <%= link('Go outside', 'Outside') %>
@@ -142,6 +151,11 @@ any configuration set in your CONFIG passage will be parsed and added to this.
 
 #### showLink(text:string, passage:string|number)
 
+Show a link that, when clicked, inserts a passage's content inline.
+
+- `text`: what will be shown to the player as clickable text
+- `passage`: either the name of the passage or its Twine ID number
+
 ```
 <%= showLink('Look outside', 'Outside') %>
 
@@ -149,6 +163,10 @@ any configuration set in your CONFIG passage will be parsed and added to this.
 ```
 
 #### show(passage:string|number)
+
+Show a passage's rendered content inline.
+
+- `passage`: either the name of the passage or its Twine ID number
 
 ```
 <%= show('Outside') %>
@@ -158,6 +176,10 @@ any configuration set in your CONFIG passage will be parsed and added to this.
 
 #### goTo(passage:string|number)
 
+Navigate the player to a passage.
+
+- `passage`: either the name of the passage or its Twine ID number
+
 ```
 <%= goTo('Outside') %>
 
@@ -165,6 +187,11 @@ any configuration set in your CONFIG passage will be parsed and added to this.
 ```
 
 #### random(choices:array)
+
+Show a random item from an array of items. For simple usage, a variable number
+of arguments can be supplied and a random item will be chosen from them.
+
+- `choices`: array of items to choose from
 
 ```
 <%= random(['thing 1', 'thing 2', 'thing 3']) %>
@@ -174,6 +201,13 @@ any configuration set in your CONFIG passage will be parsed and added to this.
 
 #### randomNumber(min:number, max:number, floating:boolean)
 
+Show a random number based on a minimum and a maximum. Optionally, it can be a
+floating point number.
+
+- `min`: the minimum number
+- `max`: the maximum number
+- `floating`: whether or not the chosen number should be floating point
+
 ```
 <%= randomNumber(0, 100) %>
 
@@ -182,21 +216,31 @@ any configuration set in your CONFIG passage will be parsed and added to this.
 
 #### toggleHeader()
 
+Toggles the HEADER meta passage's display
+
 #### toggleFooter()
+
+Toggles the FOOTER meta passage's display
 
 #### toggleDarkTheme()
 
-#### previousPassage
-
-#### nextPassage
+Toggles whether the dark theme is on or off
 
 #### saveLink(text:string)
+
+Show a link that, when clicked, saves the player's progress.
+
+- `text`: what will be shown to the player as clickable text
 
 ```
 <%= saveLink('[save]') %>
 ```
 
 #### restoreLink(text:string)
+
+Show a link that, when clicked, restores the player's progress.
+
+- `text`: what will be shown to the player as clickable text
 
 ```
 <%= restoreLink('[restore]') %>
