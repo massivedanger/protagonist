@@ -18,7 +18,10 @@ A [Twine](http://twinery.org/) with power!
 2. Click on the Formats link in the Twine 2 sidebar
 3. In the dialog that opens, click on the tab Add a New Format
 4. Paste this URL into the text box and click the +Add button:
-   `https://raw.githubusercontent.com/massivedanger/protagonist/v1.0.0-alpha.1/dist/format.js`
+   
+   ```
+   https://raw.githubusercontent.com/massivedanger/protagonist/v1.0.0-alpha.1/dist/format.js
+   ```
 
 ## Usage
 
