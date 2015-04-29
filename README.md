@@ -1,6 +1,6 @@
 # Protagonist
 
-A [Twine](http://twinery.org/) with power!
+A [Twine](http://twinery.org/) story format with power!
 
 ## Features
 
@@ -248,6 +248,15 @@ Show a link that, when clicked, restores the player's progress.
 ```
 <%= restoreLink('[restore]') %>
 ```
+
+### Third-party libraries
+
+In addition to these custom helpers, a few third-party libraries are available within
+a passage's JavaScript.
+
+- `$`: [jQuery](http://jquery.com/)
+- `_`: [lodash](https://lodash.com/)
+- `toml`: [toml-node](https://github.com/BinaryMuse/toml-node)
 
 ### Meta passages
 
