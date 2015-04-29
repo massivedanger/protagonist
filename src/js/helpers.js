@@ -135,7 +135,8 @@ class Helpers {
   }
 
   toggleDarkTheme() {
-    $('.body').toggleClass('dark');
+    $('body').toggleClass('dark');
+    this.story.config.darkTheme = $('body').hasClass('dark');
   }
 
   get previousPassage() {
