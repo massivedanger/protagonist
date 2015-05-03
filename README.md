@@ -18,7 +18,7 @@ A [Twine](http://twinery.org/) story format with power!
 2. Click on the Formats link in the Twine 2 sidebar
 3. In the dialog that opens, click on the tab Add a New Format
 4. Paste this URL into the text box and click the +Add button:
-   
+
    ```
    https://raw.githubusercontent.com/massivedanger/protagonist/v1.0.0-alpha.1/dist/format.js
    ```
@@ -247,6 +247,27 @@ Show a link that, when clicked, restores the player's progress.
 
 ```
 <%= restoreLink('[restore]') %>
+```
+
+#### backLink(text:string)
+
+Show a link that, when clicked, takes the player back a passage.
+
+- `text`: what will be shown to the player as clickable text
+
+```
+<%= backLink('GO BACK!') %>
+```
+
+#### forwardLink(text:string)
+
+Show a link that, when clicked, takes the player forward a passage if they've
+gone back from it.
+
+- `text`: what will be shown to the player as clickable text
+
+```
+<%= forwardLink('Go back to the future. Or forward. One of those.') %>
 ```
 
 ### Third-party libraries
