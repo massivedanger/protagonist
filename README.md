@@ -134,10 +134,15 @@ Store any player data inside of `state`. What player data means is up to you, bu
 By default, this will be an object with just a `darkTheme` attribute. However,
 any configuration set in your CONFIG passage will be parsed and added to this.
 
+The properties below are ones specific to the story format that will be handled
+in a special way by default.
+
 **Properties**
 
 - `darkTheme` (boolean): Whether or not the dark theme is turned on. Defaults to
   false for new stories.
+- `stylesheets` (array[string]): an array of URLs to stylesheets to be injected
+  into the page before play begins.
 
 #### link(text:string, passage:string|number)
 
