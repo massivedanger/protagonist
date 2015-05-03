@@ -1,9 +1,11 @@
 {
   "name": "protagonist",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-beta",
   "description": "A format for Twine",
-  "main": "index.js",
-  "scripts": {},
+  "main": "dist/format.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel/register --require test/support/test.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/evanwalsh/protagonist.git"
@@ -18,6 +20,7 @@
   },
   "homepage": "https://github.com/evanwalsh/protagonist",
   "devDependencies": {
+    "babel": "^5.2.6",
     "babelify": "^6.0.2",
     "browser-sync": "^2.6.4",
     "browserify": "^9.0.8",
@@ -34,7 +37,6 @@
     "watchify": "^3.1.1"
   },
   "dependencies": {
-    "howler": "^1.1.25",
     "jquery": "^2.1.3",
     "lodash": "^3.6.0",
     "marked": "^0.3.3",

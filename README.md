@@ -20,7 +20,7 @@ A [Twine](http://twinery.org/) story format with power!
 4. Paste this URL into the text box and click the +Add button:
 
    ```
-   https://raw.githubusercontent.com/massivedanger/protagonist/v1.0.0-alpha.1/dist/format.js
+   https://raw.githubusercontent.com/massivedanger/protagonist/v1.0.0-beta/dist/format.js
    ```
 
 ## Usage

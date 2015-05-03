@@ -32,7 +32,8 @@ var bundler = browserify({
   entries: paths.entry,
   extensions: ['.js'],
   debug: true
-});
+})
+.add(require.resolve('babel/polyfill'));
 
 bundler.transform(babelify.configure({
   sourceMaps: 'inline'
@@ -40,7 +41,8 @@ bundler.transform(babelify.configure({
 
 var bundleScripts = function() {
   gutil.log('Bundling scripts...');
-  return bundler.bundle()
+  return bundler
+    .bundle()
     .pipe(source('bundle.js'))
     .pipe(buffer())
     .pipe(uglify({mangle: false}))
