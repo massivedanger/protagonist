@@ -1,11 +1,6 @@
 'use strict';
 
-import $ from 'jquery';
-import _ from 'lodash';
 import Story from './story';
-
-window.$ = $;
-window._ = _;
 
 $(document).ready(() => {
   console.log('Loading Twine story...');
