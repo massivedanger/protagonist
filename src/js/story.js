@@ -15,7 +15,12 @@ class Story {
     this.creator = element.attr('creator');
     this.creatorVersion = element.attr('creator-version');
 
-    this.history = [];
+    this.history = {
+      back: [],
+      forward: [],
+      current: null
+    };
+
     this.state = {};
     this.currentCheckpoint = '';
     this.atCheckpoint = true;
@@ -58,29 +63,21 @@ class Story {
     }
 
     if (addToHistory) {
-  		this.history.push(passage.id);
+      if (this.history.current) {
+    		this.history.back.push(this.history.current);
+      }
+      this.history.current = passage.id;
+      this.history.forward = [];
     }
 
     if (_.includes(passage.tags, 'checkpoint')) {
       this.checkpoint(passage.name);
     }
 
-		if (this.atCheckpoint) {
-			window.history.pushState({ state: this.state, history: this.history, checkpointName: this.checkpointName }, '', '');
-    }
-		else {
-			window.history.replaceState({ state: this.state, history: this.history, checkpointName: this.checkpointName }, '', '');
-    }
-
 		this.atCheckpoint = false;
 
     $('#passage').html(passage.render());
-    if (this.header) {
-      $('#header .inside').html(this.header.render());
-    }
-    if (this.footer) {
-      $('#footer .inside').html(this.footer.render());
-    }
+    this.renderMetaPassages();
 
     $.event.trigger('goToPassage:after');
   }
@@ -120,7 +117,11 @@ class Story {
   }
 
   get saveKey() {
-    return `${this.name.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-')}.save`;
+    return `${this.slug}.save`;
+  }
+
+  get slug() {
+    return `${this.name.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-')}`;
   }
 
   get saveData() {
@@ -141,7 +142,7 @@ class Story {
 			this.state = save.state;
 			this.history = save.history;
 			this.currentCheckpoint = save.currentCheckpoint;
-			this.goToPassage(this.history[this.history.length - 1]);
+			this.goToPassage(this.history.current, false);
 		}
 		catch (e) {
 			$.event.trigger('restore:failed');
@@ -158,25 +159,43 @@ class Story {
     $.event.trigger('reset:after');
   }
 
-  get previousPassage() {
-    if (this.history.length <= 1) {
-      return null;
-    }
+  goBack() {
+    var id = this.history.back.pop();
+    if (id) {
+      this.history.forward.push(this.history.current);
+      this.history.current = id;
 
-    var previous;
-    if (previous = this.history[this.history.length - 1]) {
-      return previous;
+      this.goToPassage(id, false);
+    }
+    else {
+      throw new Error('Cannot go backward. No backward passage.');
+    }
+  }
+
+  goForward() {
+    var id = this.history.forward.pop();
+    if (id) {
+      this.history.back.push(this.history.current);
+      this.history.current = id;
+
+      this.goToPassage(id, false);
+    }
+    else {
+      throw new Error('Cannot go forward. No forward passage.');
+    }
+  }
+
+  get previousPassage() {
+    var id = _.last(this.history.back);
+    if (id) {
+      return this.getPassage(id);
     }
   }
 
   get nextPassage() {
-    if (this.history.length <= 1) {
-      return null;
-    }
-
-    var next;
-    if (next = this.history[this.history.length]) {
-      return next;
+    var id = _.last(this.history.forward);
+    if (id) {
+      return this.getPassage(id);
     }
   }
 
@@ -189,54 +208,47 @@ class Story {
     return this._helpers;
   }
 
+  renderMetaPassages() {
+    if (this.header) {
+      $('#header .inside').html(this.header.render());
+    }
+
+    if (this.footer) {
+      $('#footer .inside').html(this.footer.render());
+    }
+  }
+
   _findPassages() {
     console.log('Parsing passage data...');
 
     this.passages = [];
-    _.each(this.element.children('tw-passagedata'), (passageElement) => {
+    for (var passageElement of this.element.children('tw-passagedata').toArray()) {
       passageElement = $(passageElement);
       this.passages[passageElement.attr('pid')] = new Passage({
         story: this,
         element: passageElement
       });
-    });
+    }
   }
 
   _displayStyles() {
     console.log('Displaying story styles...');
 
-    _.each(this.element.children('#twine-user-stylesheet'), (style) => {
+    for (var style of this.element.children('#twine-user-stylesheet').toArray()) {
       $('body').append('<style>' + $(style).html() + '</style>');
-    });
+    }
   }
 
   _executeScripts() {
     console.log('Executing story scripts...');
 
-    _.each(this.element.children('#twine-user-script'), (script) => {
+    for (var script of this.element.children('#twine-user-script').toArray()) {
       eval($(script).html());
-    });
+    }
   }
 
   _setupEvents() {
     console.log('Setting up events...');
-
-  	$(window).on('popstate', (event) => {
-  		var state = event.originalEvent.state;
-
-  		if (state) {
-  			this.state = state.state;
-  			this.history = state.history;
-  			this.currentCheckpoint = state.currentCheckpoint;
-  			this.goToPassage(this.history[this.history.length - 1]);
-  		}
-  		else if (this.history.length < 1) {
-  			this.state = {};
-  			this.history = [];
-  			this.currentCheckpoint = '';
-  			this.goToPassage(this.startPassageID);
-  		};
-  	});
 
     $('body').on('click', 'a[data-passage]', (event) => {
       var link = $(event.target);
@@ -255,6 +267,14 @@ class Story {
 
     $('body').on('click', '.restore-link', (event) => {
       this.restore();
+    });
+
+    $('body').on('click', '.back-link', (event) => {
+      this.goBack();
+    });
+
+    $('body').on('click', '.forward-link', (event) => {
+      this.goForward();
     });
 
   	window.onerror = function (message, url, line) {
@@ -289,11 +309,11 @@ class Story {
     }
 
     if (this.config.stylesheets) {
-      _.each(this.config.stylesheets, (url) => {
+      for (var url of this.config.stylesheets) {
         $('head').append(
           `<link href='${url}' rel='stylesheet' type='text/css'>`
         );
-      })
+      }
     }
   }
 }

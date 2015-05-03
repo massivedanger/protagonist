@@ -2,14 +2,12 @@
 
 import _ from 'lodash';
 import $ from 'jquery';
-import { Howl } from 'howler';
 import toml from 'toml';
 
 class Helpers {
   constructor(story) {
     this.story = story;
     this.exposed = [
-      'story',
       'link',
       'showLink',
       'show',
@@ -19,13 +17,13 @@ class Helpers {
       'toggleHeader',
       'toggleFooter',
       'toggleDarkTheme',
-      'previousPassage',
-      'nextPassage',
       'state',
       'saveLink',
       'restoreLink',
+      'backLink',
+      'forwardLink',
       'config',
-      'buildLink'
+      'buildLink',
     ];
   }
 
@@ -38,13 +36,12 @@ class Helpers {
   }
 
   inject(object) {
-    _.each(this.exposed, (helper) => {
+    for (var helper of this.exposed) {
       object[helper] = this[helper];
-    });
+    }
 
     object.$ = $;
     object._ = _;
-    object.Howl = Howl;
     object.toml = toml;
 
     return object;
@@ -90,6 +87,20 @@ class Helpers {
     });
   }
 
+  backLink(text = 'Back') {
+    return this.buildLink({
+      text: text,
+      classes: ['back-link']
+    });
+  }
+
+  forwardLink(text = 'Forward') {
+    return this.buildLink({
+      text: text,
+      classes: ['forward-link']
+    });
+  }
+
   buildLink(options = {}) {
     var link = $('<a></a>')
       .attr('href', options.href || 'javascript:void(0)')
@@ -97,9 +108,9 @@ class Helpers {
       .html(options.text);
 
     if (options.data) {
-      _.each(options.data, (value, key) => {
-        link.attr(`data-${key}`, value);
-      });
+      for (var key in options.data) {
+        link.attr(`data-${key}`, options.data[key]);
+      }
     }
 
     return link.prop('outerHTML');
@@ -137,14 +148,6 @@ class Helpers {
   toggleDarkTheme() {
     $('body').toggleClass('dark');
     this.story.config.darkTheme = $('body').hasClass('dark');
-  }
-
-  get previousPassage() {
-    return this.story.previousPassage;
-  }
-
-  get nextPassage() {
-    return this.story.nextPassage;
   }
 
   get config() {

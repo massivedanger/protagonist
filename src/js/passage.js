@@ -16,7 +16,8 @@ class Passage {
 
   render() {
     var data = _.defaults({
-      passage: this
+      passage: this,
+      story: this.story
     }, this.story.helpers);
 
     var template = _.template(_.unescape(this.source));
