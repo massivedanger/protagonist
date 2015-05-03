@@ -1,34 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
+    <meta charset="UTF-8">
     <title>Protagonist by massivedanger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Protagonist</h1>
-        <h2>A Twine story format with power!</h2>
-        <a href="https://github.com/massivedanger/protagonist" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+    <section class="page-header">
+      <h1 class="project-name">Protagonist</h1>
+      <h2 class="project-tagline">A Twine story format with power!</h2>
+      <a href="https://github.com/massivedanger/protagonist" class="btn">View on GitHub</a>
+      <a href="https://github.com/massivedanger/protagonist/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/massivedanger/protagonist/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h2>
+    <section class="main-content">
+      <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <ul>
@@ -51,7 +42,7 @@ inline, and much more</li>
 <li>
 <p>Paste this URL into the text box and click the +Add button:</p>
 
-<pre><code>https://raw.githubusercontent.com/massivedanger/protagonist/v1.0.0-alpha.1/dist/format.js
+<pre><code>https://raw.githubusercontent.com/massivedanger/protagonist/v1.0.0-beta/dist/format.js
 </code></pre>
 </li>
 </ol>
@@ -213,12 +204,18 @@ storage</li>
 <p>By default, this will be an object with just a <code>darkTheme</code> attribute. However,
 any configuration set in your CONFIG passage will be parsed and added to this.</p>
 
+<p>The properties below are ones specific to the story format that will be handled
+in a special way by default.</p>
+
 <p><strong>Properties</strong></p>
 
 <ul>
 <li>
 <code>darkTheme</code> (boolean): Whether or not the dark theme is turned on. Defaults to
 false for new stories.</li>
+<li>
+<code>stylesheets</code> (array[string]): an array of URLs to stylesheets to be injected
+into the page before play begins.</li>
 </ul>
 
 <h4>
@@ -362,6 +359,33 @@ floating point number.</p>
 <pre><code>&lt;%= restoreLink('[restore]') %&gt;
 </code></pre>
 
+<h4>
+<a id="backlinktextstring" class="anchor" href="#backlinktextstring" aria-hidden="true"><span class="octicon octicon-link"></span></a>backLink(text:string)</h4>
+
+<p>Show a link that, when clicked, takes the player back a passage.</p>
+
+<ul>
+<li>
+<code>text</code>: what will be shown to the player as clickable text</li>
+</ul>
+
+<pre><code>&lt;%= backLink('GO BACK!') %&gt;
+</code></pre>
+
+<h4>
+<a id="forwardlinktextstring" class="anchor" href="#forwardlinktextstring" aria-hidden="true"><span class="octicon octicon-link"></span></a>forwardLink(text:string)</h4>
+
+<p>Show a link that, when clicked, takes the player forward a passage if they've
+gone back from it.</p>
+
+<ul>
+<li>
+<code>text</code>: what will be shown to the player as clickable text</li>
+</ul>
+
+<pre><code>&lt;%= forwardLink('Go back to the future. Or forward. One of those.') %&gt;
+</code></pre>
+
 <h3>
 <a id="third-party-libraries" class="anchor" href="#third-party-libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a>Third-party libraries</h3>
 
@@ -421,25 +445,16 @@ can cherry-pick around.</li>
 <li>
 <a href="http://antagonizethehorn.com/">Javy Gwaltney</a> for showing me the power of Twine</li>
 </ul>
-        </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/massivedanger/protagonist/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/massivedanger/protagonist/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/massivedanger/protagonist">Protagonist</a> is maintained by <a href="https://github.com/massivedanger">massivedanger</a>.</span>
 
-          <p class="repo-owner"><a href="https://github.com/massivedanger/protagonist"></a> is maintained by <a href="https://github.com/massivedanger">massivedanger</a>.</p>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
+    </section>
 
   
   </body>
 </html>
+
