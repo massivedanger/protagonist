@@ -222,29 +222,30 @@ class Story {
     console.log('Parsing passage data...');
 
     this.passages = [];
-    for (var passageElement of this.element.children('tw-passagedata').toArray()) {
+
+    _.each(this.element.children('tw-passagedata'), (passageElement) => {
       passageElement = $(passageElement);
       this.passages[passageElement.attr('pid')] = new Passage({
         story: this,
         element: passageElement
       });
-    }
+    });
   }
 
   _displayStyles() {
     console.log('Displaying story styles...');
 
-    for (var style of this.element.children('#twine-user-stylesheet').toArray()) {
+    _.each(this.element.children('#twine-user-stylesheet'), (style) => {
       $('body').append('<style>' + $(style).html() + '</style>');
-    }
+    });
   }
 
   _executeScripts() {
     console.log('Executing story scripts...');
 
-    for (var script of this.element.children('#twine-user-script').toArray()) {
+    _.each(this.element.children('#twine-user-script'), (script) => {
       eval($(script).html());
-    }
+    });
   }
 
   _setupEvents() {
@@ -309,11 +310,11 @@ class Story {
     }
 
     if (this.config.stylesheets) {
-      for (var url of this.config.stylesheets) {
+      _.each(this.config.stylesheets, (url) => {
         $('head').append(
           `<link href='${url}' rel='stylesheet' type='text/css'>`
         );
-      }
+      });
     }
   }
 }

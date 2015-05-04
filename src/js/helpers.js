@@ -36,9 +36,9 @@ class Helpers {
   }
 
   inject(object) {
-    for (var helper of this.exposed) {
+    _.each(this.exposed, (helper) => {
       object[helper] = this[helper];
-    }
+    });
 
     object.$ = $;
     object._ = _;

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.1
+
+- Fixed showstopper in Safari (#4)
+
 ## 1.0.0-beta
 
 - New, less glitchy history system
