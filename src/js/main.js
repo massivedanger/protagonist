@@ -1,6 +1,7 @@
 'use strict';
 
 import Story from './story';
+import $ from 'jquery';
 
 $(document).ready(() => {
   console.log('Loading Twine story...');
