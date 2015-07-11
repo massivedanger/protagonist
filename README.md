@@ -25,7 +25,7 @@ A [Twine](http://twinery.org/) story format with power!
 
 ## Help
 
-If you need help, please check out the **Usage** information below. If there's still a problem, please email [support@massivedanger.com](mailto:support@massivedanger.com) or [file an issue on GitHub](https://github.com/massivedanger/protagonist/issues).
+If you need help, please check out the **Usage** information below. If there's still a problem, please email [evan@massivedanger.com](mailto:evan@massivedanger.com) or [file an issue on GitHub](https://github.com/massivedanger/protagonist/issues).
 
 ## Usage
 
