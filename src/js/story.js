@@ -99,6 +99,8 @@ class Story {
     document.title = `${this.name}: ${name}`
     this.currentCheckpoint = name;
 		this.atCheckpoint = true;
+
+    this.save();
 		$.event.trigger('checkpoint:after');
   }
 
