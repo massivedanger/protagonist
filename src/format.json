@@ -1,10 +1,10 @@
 {
 	"name": "Protagonist",
-	"version": "1.0.0-beta.2",
+	"version": "1.0.0-rc",
 	"description": "A format for power users",
 	"image": "icon.svg",
-	"author": "Evan Walsh",
-	"url": "https://github.com/evanwalsh/protagonist",
+	"author": "Massive Danger",
+	"url": "https://github.com/massivedanger/protagonist",
 	"license": "ISC",
 	"proofing": false
 }
