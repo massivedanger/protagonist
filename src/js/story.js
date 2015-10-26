@@ -56,7 +56,7 @@ class Story {
   goToPassage(query, addToHistory = true) {
     $.event.trigger('goToPassage:before');
 
-		var passage = this.getPassage(query);
+		const passage = this.getPassage(query);
 
 		if (!passage) {
 			throw new Error(`No passage found with ID or name "${query}"`);
@@ -75,8 +75,11 @@ class Story {
     }
 
 		this.atCheckpoint = false;
+    const newPassage = passage.render();
 
-    $('#passage').html(passage.render());
+    if (this.history.current == passage.id) {
+      $('#passage').html(newPassage);
+    }
     this.renderMetaPassages();
 
     $.event.trigger('goToPassage:after');
