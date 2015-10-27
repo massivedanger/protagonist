@@ -10,4 +10,15 @@ $(document).ready(() => {
   story.play();
 
   window.story = story;
+
+  $('a[href^=#passage]').on('click', (e) => {
+    const url = e.target.href;
+    const passageID = url.split('#passage:')[1];
+    try {
+      story.goToPassage(passageID);
+      e.preventDefault();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 });
