@@ -15,15 +15,22 @@ class Passage {
   }
 
   render() {
-    var data = _.defaults({
-      passage: this,
-      story: this.story
-    }, this.story.helpers);
+    return marked(this.parse());
+  }
 
-    var template = _.template(_.unescape(this.source));
-    var parsed = this._processLinks(template(data));
+  parse(source) {
+    if (!this._parsed) {
+      const data = _.defaults({
+        passage: this,
+        story: this.story
+      }, this.story.helpers);
 
-    return marked(parsed);
+      const template = _.template(_.unescape(source || this.source));
+
+      this._parsed = this._processLinks(template(data));
+    }
+
+    return this._parsed;
   }
 
   _processLinks(text) {

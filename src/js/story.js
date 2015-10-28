@@ -240,16 +240,29 @@ class Story {
   _displayStyles() {
     console.log('Displaying story styles...');
 
+    const appendStyle = (style) => {
+      $('body').append('<style>' + style + '</style>');
+    }
+
     _.each(this.element.children('#twine-user-stylesheet'), (style) => {
-      $('body').append('<style>' + $(style).html() + '</style>');
+      appendStyle($(style).html())
+    });
+
+    _.each(_.where(this.passages, { tags: ['stylesheet'] }), (passage) => {
+      appendStyle(passage.source);
     });
   }
 
   _executeScripts() {
     console.log('Executing story scripts...');
+    const dummyPassage = this.passages[this.startPassageID];
 
     _.each(this.element.children('#twine-user-script'), (script) => {
-      eval($(script).html());
+      dummyPassage.parse(`<% ${$(script).html()} %>`);
+    });
+
+    _.each(_.where(this.passages, { tags: ['javascript'] }), (passage) => {
+      passage.parse(`<% ${passage.source} %>`);
     });
   }
 
@@ -281,6 +294,17 @@ class Story {
 
     $('body').on('click', '.forward-link', (event) => {
       this.goForward();
+    });
+
+    $('body').on('click', 'a[href^=#passage]', (e) => {
+      const url = e.target.href;
+      const passageID = url.split('#passage:')[1];
+      try {
+        story.goToPassage(passageID);
+        e.preventDefault();
+      } catch (err) {
+        console.error(err);
+      }
     });
 
   	window.onerror = function (message, url, line) {
