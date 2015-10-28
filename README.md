@@ -39,6 +39,10 @@ One addition to the Markdown parsing is support for Twine-style passage links wi
 format of `[[Link Text|Passage Name]]` or `[[Link Text->Passage Name]]`. The alternate
 `[[Passage Name<-Link Text]]` format is not supported.
 
+Also, standard Markdown links can transition players to new passages if they follow the
+format of `[Link Title Here](#passage:Passage Name)`. The link must point to `#passage:`
+followed by the name of the passage.
+
 ### Embedded JavaScript
 
 All passages support embedded JavaScript logic. That means you can do things like
@@ -290,14 +294,24 @@ a passage's JavaScript.
 
 ### Meta passages
 
+#### Header and Footer
+
 A global header and footer passage can be shown at the top and bottom of your story.
 All you have to do is create a passage named `HEADER` or `FOOTER` and they'll be
 displayed (at the top and bottom respectively).
 
-A passage named CONFIG can contain any valid [TOML](https://github.com/toml-lang/toml)
+#### Config
+
+A passage named `CONFIG` can contain any valid [TOML](https://github.com/toml-lang/toml)
 and it'll be parsed and stored within `story.config`, which can be accessed from
 any passage. This is recommended for any data that won't change *or* for anything
 that all passages will need right from the start.
+
+#### JavaScript and CSS
+
+To aid with organization of JavaScript and CSS, any passage tagged with `javascript` is
+loaded when the story is played and any passages tagged with `stylesheet` are loaded as
+global styles when the story is played.
 
 ## Contributing
 

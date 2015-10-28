@@ -296,6 +296,17 @@ class Story {
       this.goForward();
     });
 
+    $('body').on('click', 'a[href^=#passage]', (e) => {
+      const url = e.target.href;
+      const passageID = url.split('#passage:')[1];
+      try {
+        story.goToPassage(passageID);
+        e.preventDefault();
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
   	window.onerror = function (message, url, line) {
       console.error(message, url, line);
   	};
