@@ -258,11 +258,11 @@ class Story {
     const dummyPassage = this.passages[this.startPassageID];
 
     _.each(this.element.children('#twine-user-script'), (script) => {
-      dummyPassage.parse(`<% ${$(script).html()} %>`);
+      dummyPassage.parse(`{% ${$(script).html()} %}`);
     });
 
     _.each(_.where(this.passages, { tags: ['javascript'] }), (passage) => {
-      passage.parse(`<% ${passage.source} %>`);
+      passage.parse(`{% ${passage.source} %}`);
     });
   }
 
